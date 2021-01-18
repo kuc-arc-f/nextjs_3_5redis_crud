@@ -1,3 +1,5 @@
+var csrf = require('csrf');
+var tokens = new csrf();
 const redis = require("redis");
 const {promisify} = require('util');
 const client = redis.createClient();
@@ -9,9 +11,12 @@ import LibRedis from '../../../libs/LibRedis'
 export default async function (req, res){
   try{
     var data = req.body
-console.log( data );
+//console.log( data );
     var id = data.id
     var user_id = data.user_id
+    if(tokens.verify(process.env.CSRF_SECRET, data._token) === false){
+      throw new Error('Invalid Token, csrf_check');
+    }    
     var reply = await getAsync("task:" + user_id);
     var items = await JSON.parse(reply || '[]')
 // console.log(items);

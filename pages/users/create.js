@@ -35,15 +35,16 @@ export default class extends Component {
         name: this.state.name
       }
 //console.log(item)
-        const res = await fetch('/api/users/new', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(item),
-        });
+      const res = await fetch('/api/users/new', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(item),
+      });
       if (res.status === 200) {
         var json = await res.json()
 console.log( json )
-//        Router.push('/');
+          alert("Success, User add")
+          Router.push('/');
       } else {
         throw new Error(await res.text());
       }

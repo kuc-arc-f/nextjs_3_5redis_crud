@@ -10,10 +10,13 @@ import LibCookie from '../libs/LibCookie'
 //
 class Page extends React.Component {
   static async getInitialProps(ctx) {
+    var url = process.env.BASE_URL + '/api/token_get'
+    const res = await fetch(url)
+    const json = await res.json()        
     return {
       initialName: '',
       flash: flash.get(ctx)|| {},
-      csrf: "",
+      csrf: json.csrf,
     }
   }
   constructor(props) {
@@ -27,7 +30,7 @@ class Page extends React.Component {
 // console.log(this.props)
   }
   componentDidMount(){
-//    this.setState({ _token: this.props.csrf.token });
+    this.setState({ _token: this.props.csrf.token });
   }
   handleClick(){
     this.post_item()

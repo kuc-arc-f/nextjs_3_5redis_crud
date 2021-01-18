@@ -17,10 +17,14 @@ export default async (req, res) => {
     if (req.method === "POST") {
       var retArr= {ret:0, user_id:0}
       var data = req.body
+//console.log( data )      
+      if(tokens.verify(process.env.CSRF_SECRET, data._token) === false){
+        throw new Error('Invalid Token, csrf_check');
+      } 
       var reply = await getAsync("users" );
       var users = JSON.parse(reply || '[]')
       var user = LibAuth.get_user(users, data.mail)
-console.log( user ) 
+// console.log( user ) 
       if(user == null){ return res.json(retArr); }
       if (data.mail === user.mail
         && bcrypt.compareSync(data.password,  user.password )){
@@ -31,20 +35,6 @@ console.log( user )
       }else{
         return res.json(retArr);
       }      
-/*
-      const collection = await LibMongo.get_collection("users" )
-      var where = { mail: data.mail }
-      var item = await collection.findOne(where)  
-      if (data.mail === item.mail
-        && bcrypt.compareSync(data.password,  item.password )){
-          retArr.ret = 1
-          item.password = ""
-          retArr.user = item
-          return res.json(retArr);
-      }else{
-        return res.json(retArr);
-      } 
-*/
     }
     return res.status(404).send("");
   } catch (err) {

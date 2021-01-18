@@ -20,6 +20,9 @@ export default async function (req, res){
       title: data.title ,  
       content: data.content ,
     };
+    if(tokens.verify(process.env.CSRF_SECRET, data._token) === false){
+      throw new Error('Invalid Token, csrf_check');
+    }    
     var reply = await getAsync("task:" + user_id);
     var items = await JSON.parse(reply || '[]')
     var newItems = LibRedis.replace_item(items, id, item)

@@ -9,12 +9,12 @@ import Layout from '../../components/layout'
 export default class extends Component {
   static async getInitialProps(ctx) {
     var url = process.env.BASE_URL + '/api/token_get'
-    //const res = await fetch(url)
-    //const json = await res.json()
+    const res = await fetch(url)
+    const json = await res.json()
 //console.log(json)
     return { 
       user_id :cookies(ctx).user_id,
-//      csrf: json.csrf,
+      csrf: json.csrf,
     }
   }  
   constructor(props){
@@ -22,10 +22,10 @@ export default class extends Component {
     this.state = {title: '', content: '', _token : ''}
     this.handleClick = this.handleClick.bind(this);
     this.database = null
-//console.log(props)
+console.log(props)
   }
   componentDidMount(){
-//    this.setState({ _token: this.props.csrf.token });
+    this.setState({ _token: this.props.csrf.token });
     console.log( "user_id=" ,this.props.user_id )
     if(typeof this.props.user_id === 'undefined'){
       flash.set({ messages_error: 'Error, Login require' })

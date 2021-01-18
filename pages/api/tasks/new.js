@@ -16,12 +16,15 @@ export default async function (req, res){
         console.error(error);
         ret_arr.msg = error
         res.json(ret_arr);
-      });      
+      });           
       var data = req.body
       var user_id = data.user_id
-console.log(data);
+// console.log(data);
       var token =data._token
-      // console.log(token)
+//console.log(token)
+      if(tokens.verify(process.env.CSRF_SECRET, token) === false){
+        throw new Error('Invalid Token, csrf_check');
+      }  
       var replyIdx = await incrAsync("idx-task");
       var item = {
         id: replyIdx,

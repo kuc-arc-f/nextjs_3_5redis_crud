@@ -16,16 +16,15 @@ export default class extends React.Component {
     const res = await fetch(url)
     const json = await res.json()
     var item = json.item    
-    //var url = process.env.BASE_URL + '/api/token_get'
-    //var tokenRes = await fetch(url)
-    //var tokenJson = await tokenRes.json()    
-  // console.log(json)
-//console.log(item)
+    var url = process.env.BASE_URL + '/api/token_get'
+    var tokenRes = await fetch(url)
+    var tokenJson = await tokenRes.json()    
+//console.log(tokenJson)
       return {
           id: id,
           item: item,
           user_id :cookies(ctx).user_id,
-          csrf: "",
+          csrf: tokenJson.csrf,
       };
   }
   constructor(props){
@@ -37,7 +36,7 @@ export default class extends React.Component {
       content: this.props.item.content,
       _token : this.props.csrf.token,
     }
-console.log(this.props )
+//console.log(this.props )
   }
   componentDidMount(){
 //    console.log( "user_id=" ,this.props.user_id )
@@ -153,21 +152,4 @@ console.log(this.props )
     );
   };
 }
-/*
-Page.getInitialProps = async (ctx) => {
-  console.log(ctx.query.id)
-  var id = ctx.query.id
-  var item = {
-    title: "",
-    content: "",
-  }
-  if(typeof id !== 'undefined'){
-    item = await LibTask.get_show_item(id)
-  }
-console.log(item)
-    return { id: id , item:item }
-}
-*/
-
-//export default Page
 

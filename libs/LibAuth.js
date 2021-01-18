@@ -9,7 +9,7 @@ export default {
     try{
       var ret = null
       users.forEach(function(item){
-        //console.log(item.id );
+// console.log(item.id ,item.mail );
         if( item.mail === mail ){
           ret = item
         }
