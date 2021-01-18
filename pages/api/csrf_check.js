@@ -1,12 +1,8 @@
 //
 const bcrypt = require('bcrypt');
-//var cookie   = require('cookie');
-//var ObjectID = require('mongodb').ObjectID;
 var csrf = require('csrf');
 var tokens = new csrf();
 
-//import LibMongo from "../../libs/LibMongo"
-//import LibCsrf from "../../libs/LibCsrf"
 //
 export default async (req, res) => {
   try{

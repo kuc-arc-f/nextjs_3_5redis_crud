@@ -1,7 +1,6 @@
 // LibCsrf
 var csrf = require('csrf');
 var tokens = new csrf();
-import LibMongo from "../libs/LibMongo"
 
 //
 export default {

@@ -1,7 +1,5 @@
 //
 const bcrypt = require('bcrypt');
-//var cookie   = require('cookie');
-//import LibMongo from "../../../libs/LibMongo"
 import LibCsrf from "../../libs/LibCsrf"
 //
 export default async (req, res) => {
