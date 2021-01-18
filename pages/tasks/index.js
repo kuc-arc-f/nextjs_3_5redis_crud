@@ -20,7 +20,7 @@ export default class Page extends React.Component {
 //console.log(this.props)
   }  
   componentDidMount(){
-    console.log(this.props.items)
+//console.log(this.props.items)
     if(typeof this.props.user_id === 'undefined'){
       flash.set({ messages_error: 'Error, Login require' })
       Router.push('/login');
