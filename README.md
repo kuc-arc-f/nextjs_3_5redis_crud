@@ -1,12 +1,12 @@
 ﻿# nextjs_3_5redis_crud
 
- Version: 0.9.1
+ Version: 0.9.2
 
  Author  : Kouji Nakashima / kuc-arc-f.com
 
  date    : 2021/01/16
 
- update  : 2021/01/18
+ update  : 2021/03/21
 
 ***
 ### Summary

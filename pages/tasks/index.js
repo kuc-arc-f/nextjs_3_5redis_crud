@@ -4,6 +4,7 @@ import flash from 'next-flash';
 import Layout from '../../components/layout'
 import IndexRow from './IndexRow';
 import cookies from 'next-cookies'
+
 //
 export default class Page extends React.Component {
   static async getInitialProps(ctx) {
@@ -17,7 +18,7 @@ export default class Page extends React.Component {
   }
   constructor(props){
     super(props)
-//console.log(this.props)
+console.log(this.props.items )
   }  
   componentDidMount(){
 //console.log(this.props.items)

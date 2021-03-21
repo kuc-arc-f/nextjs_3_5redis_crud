@@ -14,21 +14,16 @@ export default async function (req, res){
     var data = req.body
 // console.log(data);
     var id = data.id
-    var user_id = data.user_id
-    var item = {
-      id: id,
-      title: data.title ,  
-      content: data.content ,
-    };
     if(tokens.verify(process.env.CSRF_SECRET, data._token) === false){
       throw new Error('Invalid Token, csrf_check');
     }    
-    var reply = await getAsync("task:" + user_id);
-    var items = await JSON.parse(reply || '[]')
-    var newItems = LibRedis.replace_item(items, id, item)
-//console.log(newItems);
-    var json = JSON.stringify( newItems );
-    await setAsync("task:" + user_id , json)
+    var reply = await getAsync("task:" + id);
+    var item = await JSON.parse(reply || '[]')
+    item.title = data.title
+    item.content = data.content
+console.log(item)
+    var json = JSON.stringify( item );
+    await setAsync("task:" + id , json)
     var ret ={
       item: item
     }

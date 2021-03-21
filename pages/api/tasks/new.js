@@ -18,7 +18,7 @@ export default async function (req, res){
         res.json(ret_arr);
       });           
       var data = req.body
-      var user_id = data.user_id
+//      var user_id = data.user_id
 // console.log(data);
       var token =data._token
 //console.log(token)
@@ -32,21 +32,9 @@ export default async function (req, res){
         content: data.content ,
         created_at: new Date(),
       };
-//console.log(item)       
-      var reply = await getAsync("task:" + user_id);
-// console.log(reply)       
-      if(reply == null){
-        var items = []
-        items.push(item)
-        var json = JSON.stringify( items );    
-        await setAsync("task:" + user_id , json)         
-      }else{
-        var nowItems = JSON.parse(reply || '[]')
-// console.log(nowItems.length) 
-        nowItems.push(item)
-        var json = JSON.stringify( nowItems );
-        await setAsync("task:" + user_id , json)
-      }
+// console.log(item)  
+      var json = JSON.stringify( item );    
+      await setAsync("task:" + replyIdx , json)         
     }
     res.json([]);
   } catch (err) {
