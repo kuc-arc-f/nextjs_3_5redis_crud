@@ -2,15 +2,14 @@ var csrf = require('csrf');
 var tokens = new csrf();
 const redis = require("redis");
 const {promisify} = require('util');
-const client = redis.createClient();
-
-const getAsync = promisify(client.get).bind(client);
-const setAsync = promisify(client.set).bind(client);
-const incrAsync = promisify(client.incr).bind(client);
 //
 export default async function (req, res){
   try{
     var ret_arr = {ret:0, msg:""}
+    const client = redis.createClient();
+    //      const getAsync = promisify(client.get).bind(client);
+    const setAsync = promisify(client.set).bind(client);
+    const incrAsync = promisify(client.incr).bind(client);
     if (req.method === "POST") {
       client.on("error", function(error) {
         console.error(error);
@@ -25,6 +24,7 @@ export default async function (req, res){
       if(tokens.verify(process.env.CSRF_SECRET, token) === false){
         throw new Error('Invalid Token, csrf_check');
       }  
+      
       var replyIdx = await incrAsync("idx-task");
       var item = {
         id: replyIdx,
@@ -35,6 +35,7 @@ export default async function (req, res){
 // console.log(item)  
       var json = JSON.stringify( item );    
       await setAsync("task:" + replyIdx , json)         
+      client.quit()
     }
     res.json([]);
   } catch (err) {

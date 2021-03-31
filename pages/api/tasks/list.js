@@ -1,10 +1,5 @@
 const redis = require("redis");
 const {promisify} = require('util');
-const client = redis.createClient();
-const getAsync = promisify(client.get).bind(client);
-//const setAsync = promisify(client.set).bind(client);
-const keysAsync = promisify(client.keys).bind(client);
-const mgetAsync = promisify(client.mget).bind(client);
 
 import LibRedis from '../../../libs/LibRedis'
 import LibCommon from '../../../libs/LibCommon'
@@ -12,7 +7,10 @@ import LibApiFind from '../../../libs/LibApiFind'
 //
 export default async function (req, res){
   try{
-//console.log("uid=", req.query.uid)
+    const client = redis.createClient();
+    const keysAsync = promisify(client.keys).bind(client);
+    const mgetAsync = promisify(client.mget).bind(client);
+    //console.log("uid=", req.query.uid)
     var items = []
     var reply = await keysAsync("task:*");
 //console.log(reply)
@@ -24,7 +22,8 @@ export default async function (req, res){
 //console.log(items)
     var ret ={
       items: items
-    }    
+    }   
+    client.quit() 
     res.json(ret);
   } catch (err) {
       console.log(err);
