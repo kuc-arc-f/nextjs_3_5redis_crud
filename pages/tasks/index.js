@@ -6,31 +6,9 @@ import IndexRow from './IndexRow';
 import cookies from 'next-cookies'
 
 //
-export default class Page extends React.Component {
-  static async getInitialProps(ctx) {
-    var url = process.env.BASE_URL+ '/api/tasks/list?uid=' + cookies(ctx).user_id
-    const res = await fetch(url)
-    const json = await res.json()
-//console.log(cookies(ctx).user_id)
-    return { 
-      items: json.items ,user_id :cookies(ctx).user_id,
-    }
-  }
-  constructor(props){
-    super(props)
-console.log(this.props.items )
-  }  
-  componentDidMount(){
-//console.log(this.props.items)
-    if(typeof this.props.user_id === 'undefined'){
-      flash.set({ messages_error: 'Error, Login require' })
-      Router.push('/login');
-    }    
-  }
-  render() {
-//    console.log( "user_id=" ,this.props.user_id )
-    const items = this.props.items
-    return (
+function Index(props) {
+  const items = props.items
+  return (
     <Layout>
       <div className="container">
         <Link href="/tasks/create">
@@ -46,6 +24,19 @@ console.log(this.props.items )
         </ul>
       </div>
     </Layout>
-    )
+  )
+}
+
+export const getServerSideProps = async (ctx) => {
+  //  console.log("uid=", cookies(ctx).user_id)
+  var user_id = cookies(ctx).user_id || ''
+  var url = process.env.BASE_URL+ '/api/tasks/list?uid=' + cookies(ctx).user_id
+  const res = await fetch(url)
+  const json = await res.json()
+  var items = json.items
+  return {
+    props: { items, user_id } 
   }
 }
+
+export default Index
